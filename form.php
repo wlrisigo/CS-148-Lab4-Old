@@ -5,7 +5,16 @@ include 'top.php';
 print  PHP_EOL . '<!-- SECTION: 1 Initialize variables -->' . PHP_EOL;
 
 //for count of Hikers add into a list box
-$sql = "SELECT pmkHikersId FROM tblHikers";
+$sql = "SELECT pmkHikersId, fldFirstName, fldLastName, FROM tblHikers";
+$result = $thisDatabaseReader->$query($sql);
+
+// syntax for listbox
+// <select>
+//   <option value="volvo">Volvo</option>
+//   <option value="saab">Saab</option>
+//   <option value="mercedes">Mercedes</option>
+//   <option value="audi">Audi</option>
+// </select>
 
 // These variables are used in both sections 2 and 3, otherwise we would
 // declare them in the section we needed them
