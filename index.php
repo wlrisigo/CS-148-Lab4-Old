@@ -3,7 +3,7 @@ include 'top.php';
 //##############################################################################
 //
 // This page lists the records based on the query given
-// 
+//
 //##############################################################################
 $records = '';
 
@@ -14,7 +14,7 @@ $query = 'SELECT fldFirstName, fldLastName FROM tblPeople';
 if ($thisDatabaseReader->querySecurityOk($query, 0)) {
     $query = $thisDatabaseReader->sanitizeQuery($query);
     $records = $thisDatabaseReader->select($query, '');
-    
+
 }
 
 if (DEBUG) {
@@ -23,7 +23,7 @@ if (DEBUG) {
     print '</pre></p>';
 }
 
-print '<h2 class="alternateRows">Meet the Jetsons!</h2>';
+print '<h2 class="alternateRows">Trails</h2>';
 if (is_array($records)) {
     foreach ($records as $record) {
         print '<p>' . $record['fldFirstName'] . ' ' . $record['fldLastName'] . '</p>';
