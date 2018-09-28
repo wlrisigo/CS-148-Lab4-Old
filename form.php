@@ -3,18 +3,10 @@ include 'top.php';
 //%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
 //
 print  PHP_EOL . '<!-- SECTION: 1 Initialize variables -->' . PHP_EOL;
+$currentHiker = "1";
+$hikerERROR = false;
 
-//for count of Hikers add into a list box
-$sql = "SELECT pmkHikersId, fldFirstName, fldLastName, FROM tblHikers";
-$result = $thisDatabaseReader->$query($sql);
 
-// syntax for listbox
-// <select>
-//   <option value="volvo">Volvo</option>
-//   <option value="saab">Saab</option>
-//   <option value="mercedes">Mercedes</option>
-//   <option value="audi">Audi</option>
-// </select>
 
 // These variables are used in both sections 2 and 3, otherwise we would
 // declare them in the section we needed them
@@ -34,25 +26,21 @@ print PHP_EOL . '<!-- SECTION: 1b form variables -->' . PHP_EOL;
 //
 // Initialize variables one for each form element
 // in the order they appear on the form
-$firstName = "";
-$email = "your-email@uvm.edu";
 //%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
 //
 print PHP_EOL . '<!-- SECTION: 1c form error flags -->' . PHP_EOL;
 //
 // Initialize Error Flags one for each form element we validate
 // in the order they appear on the form
+$pmkHikerId = false;
 $firstNameERROR = false;
-$emailERROR = false;
+$lastNameERROR = false;
 ////%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
 //
 print PHP_EOL . '<!-- SECTION: 1d misc variables -->' . PHP_EOL;
 //
 // create array to hold error messages filled (if any) in 2d displayed in 3c.
 $errorMsg = array();
-
-// have we mailed the information to the user, flag variable?
-$mailed = false;
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 //
 print PHP_EOL . '<!-- SECTION: 2 Process for when the form is submitted -->' . PHP_EOL;
@@ -75,9 +63,9 @@ if (isset($_POST["btnSubmit"])) {
     print PHP_EOL . '<!-- SECTION: 2b Sanitize (clean) data  -->' . PHP_EOL;
     // remove any potential JavaScript or html code from users input on the
     // form. Note it is best to follow the same order as declared in section 1c.
+    $hikerID = htmlentities($_POST["intID"], ENT_QUOTES, "UTF-8");
     $firstName = htmlentities($_POST["txtFirstName"], ENT_QUOTES, "UTF-8");
-
-    $email = filter_var($_POST["txtEmail"], FILTER_SANITIZE_EMAIL);
+    $lastNAme = htmlentities($_POST["txtLastName"], ENT_QUOTES, "UTF-8");
 
 
 
@@ -118,6 +106,11 @@ if (isset($_POST["btnSubmit"])) {
         if ($debug)
                 print '<p>Form is valid</p>';
 
+
+              $query = "SELECT *";
+              $query = "from tblHikers";
+
+              //$thisDatabaseReader
         //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         //
         print PHP_EOL . '<!-- SECTION: 2e Save Data -->' . PHP_EOL;
@@ -169,21 +162,6 @@ if (isset($_POST["btnSubmit"])) {
             $message .= ' = ' . htmlentities($value, ENT_QUOTES, "UTF-8") . '</p>';
         }
 
-        //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-        //
-        print PHP_EOL . '<!-- SECTION: 2g Mail to user -->' . PHP_EOL;
-        //
-        // Process for mailing a message which contains the forms data
-        // the message was built in section 2f.
-        $to = $email; // the person who filled out the form
-        $cc = '';
-        $bcc = '';
-        $from = 'WRONG site <customer.service@your-site.com>';
-        // subject of mail should make sense to your form
-        $subject = 'Groovy: ';
-        $mailed = sendMail($to, $cc, $bcc, $from, $subject, $message);
-    } // end form is valid
-}   // ends if form was submitted.
 //#############################################################################
 //
 print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
